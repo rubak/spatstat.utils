@@ -30,7 +30,7 @@ jobs:
 
       - name: Bootstrap
         run: |
-          curl -OLs https://raw.githubusercontent.com/rubak/r-ci/master/docs/run.sh
+          curl -OLs https://raw.githubusercontent.com/rubak/spatstat.utils/master/run.sh
           chmod 0755 run.sh
           ./run.sh bootstrap
       - name: Dependencies
