@@ -209,6 +209,7 @@ BootstrapLinux() {
     #   https://stat.ethz.ch/pipermail/r-help//2012-September/335676.html
     # May 2020: we also need devscripts for checkbashism
     # Sep 2020: add bspm, remotes
+    Retry sudo apt-get purge -y r-base-dev r-recommended r-base-core
     Retry sudo apt-get install -y --no-install-recommends r-base-dev r-recommended qpdf devscripts r-cran-remotes
     
     if [[ "${USE_BSPM}" != "FALSE" ]]; then
