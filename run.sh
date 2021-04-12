@@ -175,6 +175,11 @@ BootstrapLinux() {
         ## now add repo (and update index)
         sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
     elif [[ "${R_VERSION}" == "3.5" ]]; then
+        ## need pinning to ensure repo sorts higher
+        echo "Package: *" | sudo tee /etc/apt/preferences.d/c2d4u-pin >/dev/null
+        echo "Pin: release o=LP-PPA-marutter-c2d4u3.5" | sudo tee -a /etc/apt/preferences.d/c2d4u-pin >/dev/null
+        echo "Pin-Priority: 750" | sudo tee -a /etc/apt/preferences.d/c2d4u-pin >/dev/null
+        ## now add repo (and update index)
         sudo add-apt-repository "deb ${CRAN}/bin/linux/ubuntu $(lsb_release -cs)-cran35/"
     elif [[ "${R_VERSION}" == "3.4" ]]; then
         echo "Using R 3.4 is no longer supported."
@@ -209,9 +214,10 @@ BootstrapLinux() {
     #   https://stat.ethz.ch/pipermail/r-help//2012-September/335676.html
     # May 2020: we also need devscripts for checkbashism
     # Sep 2020: add bspm, remotes
-    Retry sudo apt-get purge -y r-base-dev r-recommended r-base-core
+    Rscript -e 'sessionInfo()'
+    Retry sudo apt-get remove -y r-base-dev r-recommended r-base-core
     Retry sudo apt-get install -y --no-install-recommends r-base-dev r-recommended qpdf devscripts r-cran-remotes
-    
+    Rscript -e 'sessionInfo()'
     if [[ "${USE_BSPM}" != "FALSE" ]]; then
         Retry sudo apt-get install -y --no-install-recommends r-cran-bspm
     fi
