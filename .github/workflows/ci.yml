@@ -13,22 +13,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macOS-latest
-            rversion: "4.0"
-            bspm: "true"
-          - os: ubuntu-latest
-            rversion: "4.0"
-            bspm: "true"
-          - os: ubuntu-16.04
+          - os: ubuntu-20.04
             rversion: "3.5"
-            bspm: "false"
 
     runs-on: ${{ matrix.os }}
     
     env:
       USE_BSPM: ${{ matrix.bspm }}
       _R_CHECK_FORCE_SUGGESTS_: "false"
-      COVERAGE_TYPE: "all"
       R_VERSION: ${{ matrix.rversion }}
 
     steps:
@@ -45,7 +37,3 @@ jobs:
 
       - name: Test
         run: ./run.sh run_tests
-
-      - name: Coverage
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: ./run.sh coverage
